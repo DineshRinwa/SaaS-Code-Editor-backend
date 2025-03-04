@@ -38,7 +38,7 @@ app.use("/api/subscribe", subscribeRoute);
 
 //  Home request
 app.get("/", (req, res) => {
-  res.send("Welcome To Home Page...");
+  res.json({ message: "Welcome To Home Page..." });
 });
 
 // Start server with DB connection
