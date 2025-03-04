@@ -2,8 +2,15 @@ const express = require("express");
 const Snippet = require("../models/snippetModel");
 const authMiddleware = require("../middleware/auth");
 const router = express.Router();
-const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
+const { requireAuth } = require('@clerk/express');
 
+
+// Ensure Clerk has the required keys
+if (!process.env.CLERK_PUBLISHABLE_KEY || !process.env.CLERK_SECRET_KEY) {
+  console.error("❌ Clerk API keys are missing! Check your .env file.");
+  process.exit(1);
+}
+ 
 // Get All Snippets
 router.get("/", async (req, res) => {
   try {
@@ -40,8 +47,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
-  const { title, language, code, user } = req.body;
+router.post("/",  requireAuth(), async (req, res) => {
+  const { title, language, code, user, userId } = req.body;
 
   try {
     // Validate required fields
@@ -52,6 +59,7 @@ router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
 
     // Create snippet
     const snippet = await Snippet.create({
+      userId,
       user,
       title,
       language,
@@ -63,6 +71,7 @@ router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
       snippet: {
         id: snippet._id,
         user : snippet.user,
+        userId: snippet.userId,
         title: snippet.title,
         language: snippet.language,
         code: snippet.code,
@@ -77,7 +86,7 @@ router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
 });
 
 // some change are need
-router.delete("/:id", ClerkExpressRequireAuth(), async (req, res) => {
+router.delete("/:id",  requireAuth(), async (req, res) => {
   const snippetId = req.params.id;
   const userId = req.user.id;
 
