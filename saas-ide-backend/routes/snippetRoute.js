@@ -36,6 +36,10 @@ router.get("/:id", async (req, res) => {
     const snippetId = req.params.id;
     const data = await Snippet.findById(snippetId);
 
+    if (!data) {
+      return res.status(404).json({ message: "Snippet not found" });
+    }
+
     // Return snippet
     return res.status(200).json({ message: "Get Snippet", data });
   } catch (error) {
@@ -46,8 +50,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/",  requireAuth, async (req, res) => {
-  const { title, language, code, user, userId } = req.body;
+
+// Create Snippet
+router.post("/",  requireAuth(), async (req, res) => {
+  const { title, language, code, user } = req.body;
+  const userId = req.auth.userId;
 
   try {
     // Validate required fields
@@ -69,8 +76,8 @@ router.post("/",  requireAuth, async (req, res) => {
       message: "Snippet created successfully",
       snippet: {
         id: snippet._id,
-        user : snippet.user,
         userId: snippet.userId,
+        user : snippet.user,
         title: snippet.title,
         language: snippet.language,
         code: snippet.code,
@@ -84,12 +91,11 @@ router.post("/",  requireAuth, async (req, res) => {
   }
 });
 
-// some change are need
-router.delete("/:id",  requireAuth, async (req, res) => {
-  const snippetId = req.params.id;
-  const userId = req.user.id;
 
-  
+// Delete Snippet
+router.delete("/:id",  requireAuth(), async (req, res) => {
+  const snippetId = req.params.id;
+  const userId = req.auth.userId;
 
   try {
     // Find the snippet
@@ -97,7 +103,7 @@ router.delete("/:id",  requireAuth, async (req, res) => {
     if (!snippet) return res.status(404).json({ message: "Snippet not Found" });
 
     // Check ownership
-    if (snippet.user.toString() !== userId) {
+    if (snippet.userId !== userId) {
       return res
         .status(403)
         .json({ message: "You are not authorized to delete this snippet" });

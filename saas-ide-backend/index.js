@@ -32,7 +32,7 @@ const commentRoute = require("./routes/commentRoute");
 const subscribeRoute = require("./routes/subscribeRoute");
 
 app.use("/api/users", userRoute);
-app.use("/snippets", snippetRoute);
+app.use("/api/snippets", snippetRoute);
 app.use("/api/snippets/comment", commentRoute);
 app.use("/api/subscribe", subscribeRoute);
 
