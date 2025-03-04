@@ -1,6 +1,5 @@
 const express = require("express");
 const Snippet = require("../models/snippetModel");
-const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 const { requireAuth } = require('@clerk/express');
 
@@ -47,7 +46,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/",  requireAuth(), async (req, res) => {
+router.post("/",  requireAuth, async (req, res) => {
   const { title, language, code, user, userId } = req.body;
 
   try {
@@ -86,9 +85,11 @@ router.post("/",  requireAuth(), async (req, res) => {
 });
 
 // some change are need
-router.delete("/:id",  requireAuth(), async (req, res) => {
+router.delete("/:id",  requireAuth, async (req, res) => {
   const snippetId = req.params.id;
   const userId = req.user.id;
+
+  
 
   try {
     // Find the snippet
