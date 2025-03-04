@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const snippetSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
 

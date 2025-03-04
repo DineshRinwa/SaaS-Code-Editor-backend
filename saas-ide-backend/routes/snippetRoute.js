@@ -2,6 +2,7 @@ const express = require("express");
 const Snippet = require("../models/snippetModel");
 const authMiddleware = require("../middleware/auth");
 const router = express.Router();
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
 
 // Get All Snippets
 router.get("/", async (req, res) => {
@@ -39,19 +40,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", authMiddleware, async (req, res) => {
-  const { title, language, code } = req.body;
+router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
+  const { title, language, code, user } = req.body;
 
   try {
     // Validate required fields
-    if (!title || !language || !code)
+    if (!title || !language || !code || !user)
       return res
         .status(400)
-        .json({ message: "Title, language, and code are required" });
+        .json({ message: "Title, language, user and code are required" });
 
     // Create snippet
     const snippet = await Snippet.create({
-      user: req.user.id,
+      user,
       title,
       language,
       code,
@@ -61,6 +62,7 @@ router.post("/", authMiddleware, async (req, res) => {
       message: "Snippet created successfully",
       snippet: {
         id: snippet._id,
+        user : snippet.user,
         title: snippet.title,
         language: snippet.language,
         code: snippet.code,
@@ -74,7 +76,8 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+// some change are need
+router.delete("/:id", ClerkExpressRequireAuth(), async (req, res) => {
   const snippetId = req.params.id;
   const userId = req.user.id;
 

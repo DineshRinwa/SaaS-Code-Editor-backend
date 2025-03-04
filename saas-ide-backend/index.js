@@ -7,10 +7,20 @@ const connectDB = require("./Config/db"); // Import DB function
 const PORT = process.env.PORT || 4000;
 const app = express();
 
+const allowedOrigins = ["http://localhost:5173"];
+
 app.use(
   cors({
-    origin: "*", // Allow all origins (temporary, for no frontend)
-    credentials: true, // Still supports cookies for auth
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Allow cookies and authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow these HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
 );
 app.use(cookieParser());
