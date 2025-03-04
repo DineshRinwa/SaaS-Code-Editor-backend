@@ -21,7 +21,7 @@ const snippetRoute = require("./routes/snippetRoute");
 const commentRoute = require("./routes/commentRoute");
 const subscribeRoute = require("./routes/subscribeRoute");
 
-app.use("/api/create-user", userRoute);
+app.use("/api/users", userRoute);
 app.use("/api/snippets", snippetRoute);
 app.use("/api/snippets/comment", commentRoute);
 app.use("/api/subscribe", subscribeRoute);

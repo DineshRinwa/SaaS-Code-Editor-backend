@@ -17,7 +17,7 @@ lemonSqueezySetup({
 router.post("/", async (req, res) => {
   try {
     const { userId, name, email } = req.body;
-    const variantId = "YOUR_SUBSCRIPTION_VARIANT_ID";
+    const variantId = process.env.Variant_ID;
 
     const checkout = await createCheckout({
       storeId: process.env.LEMON_SQUEEZY_STORE_ID,
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
           custom: { userId }, // Link checkout to this user
         },
         checkout_options: {
-          redirect_url: "https://yourdomain.com/api/subscribe/success",
+          redirect_url: "https://saas-ide.lemonsqueezy.com/api/subscribe/success",
         },
       },
     });
