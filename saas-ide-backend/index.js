@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const connectDB = require("./Config/db"); // Import DB function
@@ -7,25 +7,24 @@ const connectDB = require("./Config/db"); // Import DB function
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-app.use(cors({
-  origin: "*", // Allow all origins (temporary, for no frontend)
-  credentials: true // Still supports cookies for auth
-}));
+app.use(
+  cors({
+    origin: "*", // Allow all origins (temporary, for no frontend)
+    credentials: true, // Still supports cookies for auth
+  })
+);
 app.use(cookieParser());
 app.use(express.json()); // Middleware to parse JSON bodies
 
-
-const userRoute = require("./routes/registerRoute");
-const loginRoute = require("./routes/loginRoute");
+const userRoute = require("./routes/user");
 const snippetRoute = require("./routes/snippetRoute");
 const commentRoute = require("./routes/commentRoute");
-const proUser = require("./routes/proUser");
+const subscribeRoute = require("./routes/subscribeRoute");
 
-app.use("/api/register", userRoute);
-app.use("/api/login", loginRoute);
+app.use("/api/create-user", userRoute);
 app.use("/api/snippets", snippetRoute);
 app.use("/api/snippets/comment", commentRoute);
-app.use("/api/proUser", proUser);
+app.use("/api/subscribe", subscribeRoute);
 
 //  Home request
 app.get("/", (req, res) => {
