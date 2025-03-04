@@ -37,7 +37,7 @@ app.use("/api/snippets/comment", commentRoute);
 app.use("/api/subscribe", subscribeRoute);
 
 //  Home request
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.json({ message: "Welcome To Home Page..." });
 });
 
