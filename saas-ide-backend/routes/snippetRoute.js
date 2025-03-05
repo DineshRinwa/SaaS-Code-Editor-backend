@@ -55,6 +55,7 @@ router.get("/:id", async (req, res) => {
 router.post("/",  requireAuth(), async (req, res) => {
   const { title, language, code, user } = req.body;
   const userId = req.auth.userId;
+  
 
   try {
     // Validate required fields

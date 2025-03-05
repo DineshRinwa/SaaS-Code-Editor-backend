@@ -7,7 +7,10 @@ const connectDB = require("./Config/db"); // Import DB function
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://saa-s-code-editor.vercel.app/",
+];
 
 app.use(
   cors({
@@ -29,12 +32,10 @@ app.use(express.json()); // Middleware to parse JSON bodies
 const userRoute = require("./routes/user");
 const snippetRoute = require("./routes/snippetRoute");
 const commentRoute = require("./routes/commentRoute");
-const subscribeRoute = require("./routes/subscribeRoute");
 
 app.use("/api/users", userRoute);
 app.use("/api/snippets", snippetRoute);
 app.use("/api/snippets/comment", commentRoute);
-app.use("/api/subscribe", subscribeRoute);
 
 //  Home request
 app.get("/home", (req, res) => {
