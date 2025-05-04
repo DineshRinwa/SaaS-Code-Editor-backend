@@ -31,11 +31,11 @@ app.use(express.json()); // Middleware to parse JSON bodies
 
 const userRoute = require("./routes/user");
 const snippetRoute = require("./routes/snippetRoute");
-const commentRoute = require("./routes/commentRoute");
+// const commentRoute = require("./routes/commentRoute");
 
-app.use("/api/users", userRoute);
+app.use("/api/auth", userRoute);
 app.use("/api/snippets", snippetRoute);
-app.use("/api/snippets/comment", commentRoute);
+// app.use("/api/snippets/comment", commentRoute);
 
 //  Home request
 app.get("/home", (req, res) => {
