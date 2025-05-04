@@ -4,10 +4,13 @@ const authMiddleware = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   const refreshToken = req.cookies.refreshToken;
 
+  // console.log(process.env.ACCESS_TOKEN_SECRET, "A-",accessToken, "R-", refreshToken)
+
   // Try verifying access token if it exists
   if (accessToken) {
     try {
       const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+
       req.user = decoded;
       return next();
     } catch (error) {
