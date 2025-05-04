@@ -4,8 +4,6 @@ const authMiddleware = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   const refreshToken = req.cookies.refreshToken;
 
-  // console.log(process.env.ACCESS_TOKEN_SECRET, "A-",accessToken, "R-", refreshToken)
-
   // Try verifying access token if it exists
   if (accessToken) {
     try {
